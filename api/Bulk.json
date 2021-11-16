@@ -1,246 +1,234 @@
 [
 	{
-		"name": "apl"
+		"label": "apl"
 	},
-	{"name": "asciiarmor"},
-	{"name": "asn.1"},
-	{"name": "asterisk"},
-	{"name": "brainfuck"},
-	{"name": "clike"},
-	{"name": "clojure"},
-	{"name": "cmake"},
-	{"name": "cobol"},
-	{"name": "coffeescript"},
-	{"name": "commonlisp"},
-	{"name": "crystal"},
-	{"name": "css"},
-	
-{"name": "cypher"
+	{"label": "asciiarmor"},
+	{"label": "asn.1"},
+	{"label": "asterisk"},
+	{"label": "brainfuck"},
+	{"label": "clike"},
+	{"label": "clojure"},
+	{"label": "cmake"},
+	{"label": "cobol"},
+	{"label": "coffeescript"},
+	{"label": "commonlisp"},
+	{"label": "crystal"},
+	{"label": "css"},
+
+{"label": "cypher"
 },
-{"name": "d"
+{"label": "d"
 },
-{"name": "dart"
+{"label": "dart"
 },
-{"name": "diff"
+{"label": "diff"
 },
-{"name": "django"
+{"label": "django"
 },
-{"name": "dockerfile"
+{"label": "dockerfile"
 },
-{"name": "dtd"
+{"label": "dtd"
 },
-{"name": "dylan"
+{"label": "dylan"
 },
-{"name": "ebnf"
+{"label": "ebnf"
 },
-{"name": "ecl"
+{"label": "ecl"
 },
-{"name": "eiffel"
+{"label": "eiffel"
 },
-{"name": "elm"
+{"label": "elm"
 },
-{"name": "erlang"
+{"label": "erlang"
 },
-{"name": "factor"
+{"label": "factor"
 },
-{"name": "fcl"
+{"label": "fcl"
 },
-{"name": "forth"
+{"label": "forth"
 },
-{"name": "fortran"
+{"label": "fortran"
 },
-{"name": "gas"
+{"label": "gas"
 },
-{"name": "gfm"
+{"label": "gfm"
 },
-{"name": "gherkin"
+{"label": "gherkin"
 },
-{"name": "go"
+{"label": "go"
 },
-{"name": "groovy"
+{"label": "groovy"
 },
-{"name": "haml"
+{"label": "haml"
 },
-{"name": "handlebars"
+{"label": "handlebars"
 },
-{"name": "haskell"
+{"label": "haskell"
 },
-{"name": "haskell-literate"
+{"label": "haskell-literate"
 },
-{"name": "haxe"
+{"label": "haxe"
 },
-{"name": "htmlembedded"
+{"label": "htmlembedded"
 },
-{"name": "htmlmixed"
+{"label": "htmlmixed"
 },
-{"name": "http"
+{"label": "http"
 },
-{"name": "idl"
+{"label": "idl"
 },
-{"name": "javascript"
+{"label": "javascript"
 },
-{"name": "jinja2"
+{"label": "jinja2"
 },
-{"name": "jsx"
+{"label": "jsx"
 },
-{"name": "julia"
+{"label": "julia"
 },
-{"name": "livescript"
+{"label": "livescript"
 },
-{"name": "lua"
+{"label": "lua"
 },
-{"name": "markdown"
+{"label": "markdown"
 },
-{"name": "mathematica"
+{"label": "mathematica"
 },
-{"name": "mbox"
+{"label": "mbox"
 },
-{"name": "mirc"
+{"label": "mirc"
 },
-{"name": "mllike"
+{"label": "mllike"
 },
-{"name": "modelica"
+{"label": "modelica"
 },
-{"name": "mscgen"
+{"label": "mscgen"
 },
-{"name": "mumps"
+{"label": "mumps"
 },
-{"name": "nginx"
+{"label": "nginx"
 },
-{"name": "nsis"
+{"label": "nsis"
 },
-{"name": "ntriples"
+{"label": "ntriples"
 },
-{"name": "octave"
+{"label": "octave"
 },
-{"name": "oz"
+{"label": "oz"
 },
-{"name": "pascal"
+{"label": "pascal"
 },
-{"name": "pegjs"
+{"label": "pegjs"
 },
-{"name": "perl"
+{"label": "perl"
 },
-{"name": "php"
+{"label": "php"
 },
-{"name": "pig"
+{"label": "pig"
 },
-{"name": "powershell"
+{"label": "powershell"
 },
-{"name": "properties"
+{"label": "properties"
 },
-{"name": "protobuf"
+{"label": "protobuf"
 },
-{"name": "pug"
+{"label": "pug"
 },
-{"name": "puppet"
+{"label": "puppet"
 },
-{"name": "python"
+{"label": "python"
 },
-{"name": "q"
+{"label": "q"
 },
-{"name": "r"
+{"label": "r"
 },
-{"name": "rpm"
+{"label": "rpm"
 },
-{"name": "rst"
+{"label": "rst"
 },
-{"name": "ruby"
+{"label": "ruby"
 },
-{"name": "rust"
+{"label": "rust"
 },
-{"name": "sas"
+{"label": "sas"
 },
-{"name": "sass"
+{"label": "sass"
 },
-{"name": "scheme"
+{"label": "scheme"
 },
-{"name": "shell"
+{"label": "shell"
 },
-{"name": "sieve"
+{"label": "sieve"
 },
-{"name": "slim"
+{"label": "slim"
 },
-{"name": "smalltalk"
+{"label": "smalltalk"
 },
-{"name": "smarty"
+{"label": "smarty"
 },
-{"name": "solr"
+{"label": "solr"
 },
-{"name": "soy"
+{"label": "soy"
 },
-{"name": "sparql"
+{"label": "sparql"
 },
-{"name": "spreadsheet"
+{"label": "spreadsheet"
 },
-{"name": "sql"
+{"label": "sql"
 },
-{"name": "stex"
+{"label": "stex"
 },
-{"name": "stylus"
+{"label": "stylus"
 },
-{"name": "swift"
+{"label": "swift"
 },
-{"name": "tcl"
+{"label": "tcl"
 },
-{"name": "textile"
+{"label": "textile"
 },
-{"name": "tiki"
+{"label": "tiki"
 },
-{"name": "tiddlywiki"
+{"label": "tiddlywiki"
 },
-{"name": "toml"
+{"label": "toml"
 },
-{"name": "tornado"
+{"label": "tornado"
 },
-{"name": "troff"
+{"label": "troff"
 },
-{"name": "ttcn"
+{"label": "ttcn"
 },
-{"name": "ttcn-cfg"
+{"label": "ttcn-cfg"
 },
-{"name": "turtle"
+{"label": "turtle"
 },
-{"name": "twig"
+{"label": "twig"
 },
-{"name": "vb"
+{"label": "vb"
 },
-{"name": "vbscript"
+{"label": "vbscript"
 },
-{"name": "velocity"
+{"label": "velocity"
 },
-{"name": "verilog"
+{"label": "verilog"
 },
-{"name": "vhdl"
+{"label": "vhdl"
 },
-{"name": "vue"
+{"label": "vue"
 },
-{"name": "wast"
+{"label": "wast"
 },
-{"name": "webidl"
+{"label": "webidl"
 },
-{"name": "xml"
+{"label": "xml"
 },
-{"name": "xquery"
+{"label": "xquery"
 },
-{"name": "yacas"
+{"label": "yacas"
 },
-{"name": "yaml"
+{"label": "yaml"
 },
-{"name": "yaml-frontmatter"
+{"label": "yaml-frontmatter"
 },
-{"name": "z80"
+{"label": "z80"
 }
 ]
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,92 +1,92 @@
 .container * {
-    box-sizing: border-box;
-  }
-  
+  box-sizing: border-box;
+}
+
+.container {
+  --br: 10px;
+  margin: 1em auto;
+  max-width: 60em;
+  display: grid;
+  grid-template-columns: auto minmax(20em, 20em);
+}
+
+.container .image {
+  max-width: 10em;
+  border-radius: var(--br);
+}
+
+.container section {
+  position: relative;
+  background-color: #fff;
+  padding: 2em;
+  margin: 1em 1em;
+  border-radius: var(--br);
+  box-shadow: 0 0.5em 1em #0001;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit {
+  background-color: transparent;
+  border: none;
+  padding: 1em 2em;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.email,
+.github {
+  display: block;
+  color: #555;
+  font-weight: 300;
+  text-decoration: none;
+  margin: 0.25em 0 0 0;
+}
+.tags {
+  margin: 0 0 1em 0;
+  display: flex;
+  gap: 0.25em;
+}
+.tag {
+  font-size: 0.85rem;
+  border-radius: 4px;
+  width: max-content;
+  background-color: var(--c-blue);
+  box-shadow: var(--bs-blue);
+  color: #fff;
+  padding: 0.5em 1em;
+}
+
+.right {
+  column-width: 85%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.right > section {
+  height: 100%;
+}
+
+.posts {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+@media screen and (max-width: 700px) {
   .container {
-    --br: 10px;
-    margin: 1em auto;
-    max-width: 60em;
-    display: grid;
-    grid-template-columns: auto minmax(20em, 20em);
+    grid-template-columns: auto;
   }
-  
-  .container .image {
-    max-width: 10em;
-    border-radius: var(--br);
-  }
-  
-  .container section {
-    position: relative;
-    background-color: #fff;
-    padding: 2em;
-    margin: 1em 1em;
-    border-radius: var(--br);
-    box-shadow: 0 0.5em 1em #0001;
-  }
-  
-  .left {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .edit {
-    background-color: transparent;
-    border: none;
-    padding: 1em 2em;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  
-  .name {
-    font-size: 1.5rem;
-    font-weight: 500;
-  }
-  
-  .email,
-  .github {
-    display: block;
-    color: #555;
-    font-weight: 300;
-    text-decoration: none;
-    margin: 0.25em 0 0 0;
-  }
-  .tags {
-    margin: 0 0 1em 0;
-    display: flex;
-    gap: 0.25em;
-  }
-  .tag {
-    font-size: 0.85rem;
-    border-radius: 4px;
-    width: max-content;
-    background-color: var(--c-blue);
-    color: #fff;
-    padding: 0.5em 1em;
-  }
-  
   .right {
-    column-width: 85%;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: none;
   }
-  .right > section {
-    height: 100%;
-  }
-  
-  .posts {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
-  
-  @media screen and (max-width: 700px) {
-    .container {
-      grid-template-columns: auto;
-    }
-    .right {
-      display: none;
-    }
-  }
-  
+}

@@ -1,0 +1,19 @@
+.tags {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5rem;
+  padding: 0 var(--pX) 1em var(--pX);
+}
+
+.tag {
+  display: block;
+  width: max-content;
+  list-style: none;
+  padding: 0.25rem 1rem !important;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--c-blue);
+  box-shadow: var(--bs-blue);
+  border-radius: 4px;
+}

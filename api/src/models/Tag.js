@@ -5,7 +5,7 @@ const { DataTypes, Sequelize } = require('sequelize');
 module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('tags',{
-    name: {
+    label: {
       type: DataTypes.STRING,
       allowNull: false,
     },

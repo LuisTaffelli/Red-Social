@@ -9,8 +9,7 @@ const Op = Sequelize.Op;
 const db = require("../db.js");
 
 // NEW REGISTER
-
-router.post("/", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   try {
     let { email, username, password } = req.body;
     let errorsPassword = await fn.DB_validatePassword(password);
@@ -37,7 +36,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // VALIDATE ACCOUT
-router.get("/account", async(req,res,next)=>{
+router.get("/validate/account", async(req,res,next)=>{
   try {
     const {email,token} = req.query
     const validate = await db.ValidateToken.findOne({where:{email,token}}).catch(e=>null)
@@ -46,7 +45,7 @@ router.get("/account", async(req,res,next)=>{
     if(findUser) return res.send({errors:"User already validated"})
     if(validate.password && validate.email && validate.username){
       const userCreate = await db.User.create({username:validate.username,email:validate.email,password:validate.password})
-      return res.redirect(301, 'http://localhost:3000/')
+      return res.redirect(301, 'http://localhost:3000/login')
     }
   } catch(e) {
     console.log(e);
@@ -75,7 +74,7 @@ router.post("/forgot/password",async (req,res,next)=>{
     res.sendStatus(500)
   }
 })
-
+// reset password
 router.get("/password/reset",async(req,res,next)=>{
   try {
     const {email,token} = req.query
@@ -90,8 +89,24 @@ router.get("/password/reset",async(req,res,next)=>{
     res.sendStatus(500)
   }  
 })
+// validate token
+router.get("/token/validate", async (req,res,next)=>{
+  try {
+    const {email,token} = req.query
+    const validate = await db.ForgotPassword.findOne({where:{email,token}}).catch(e=>null)
+    if(!validate) return res.send({errors:"No se puede validar este email", success:false})
+    if(validate.email && validate.username){
+      return res.send({msg:"Valid token", success:true})
+    }
+    else return res.send({errors:"Se ha producido un error",success:false})    
+  } catch(e) {
+    console.log(e);
+    res.sendStatus(500)
+  }
+})
 // update password - delete token
 router.post("/password/generated", async(req,res,next)=>{
+  console.log("entra")
   const {email,token} = req.query
   let {password} = req.body
   if(!email || !token || !password) return res.send({errors:"Datos invalidos"})
@@ -104,5 +119,15 @@ router.post("/password/generated", async(req,res,next)=>{
   }else return res.send({success:false,user:"Token does not exist"})
   return res.send(findToken)
 })
-
+// all tokens reset password
+router.get("/token/all", async (req,res,next)=>{
+  try {
+    const findToken = await db.ForgotPassword.findAll()
+    // findToken[0].destroy()
+    res.send(await db.ForgotPassword.findAll())
+  } catch(e) {
+    console.log(e);
+    res.sendStatus(500)
+  }
+})
 module.exports = router;

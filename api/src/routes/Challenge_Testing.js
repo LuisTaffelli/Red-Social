@@ -16,9 +16,9 @@ router.post("/", async (req, res) => {
       return res.status(200).send({msg: "Test cant be runned", error: "Forbidden keywords used"})
     }
     try {
-      /*const tested = eval(code);*/
-      const tested2 = (new Function("return " + code)();)
-      res.status(200).send({ tested2 });
+      const tested = eval(code);
+      const tested2 = (new Function(`return ${code}`)())
+      res.status(200).send({ tested2, tested });
     } catch (e) {
       res.status(200).send({ error: "Non iterable function", e });
     }

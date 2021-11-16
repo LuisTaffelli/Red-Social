@@ -1,0 +1,6 @@
+.notification {
+  margin: 0.5em 1rem;
+  font-size: 0.9rem;
+  height: max-content;
+  max-width: 100%;
+}

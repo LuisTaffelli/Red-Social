@@ -61,6 +61,7 @@
   border-radius: 4px;
   width: max-content;
   background-color: var(--c-blue);
+  box-shadow: var(--bs-blue);
   color: #fff;
   padding: 0.5em 1em;
 }

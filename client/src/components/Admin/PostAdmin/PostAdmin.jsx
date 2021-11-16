@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import image from "../../../images/userCard.svg";
+import Tags from "../../Tags/Tags";
+
 
 import {
   commentPost,
@@ -10,9 +12,11 @@ import {
   updatePage,
   likePost,
   banPost,
+  banComment,
+  deleteComment
 } from "../../../Redux/actions/Post";
 
-import Comment from "../../Comment/Comment";
+import CommentAdmin from "../CommentAdmin/CommentAdmin";
 
 import styles from "./PostAdmin.module.css";
 
@@ -31,6 +35,7 @@ import { BsFillPencilFill } from "react-icons/bs";
 
 import { BiCommentDetail, BiDotsVerticalRounded } from "react-icons/bi";
 import validate from "../../../utils/validate";
+import UserCardAdmin from "../UserCardAdmin/UserCardAdmin";
 
 const parseContent = (text) => {
   const mentions = text && text.match(/@\w+/gi);
@@ -52,25 +57,32 @@ const parseContent = (text) => {
 
   return parsed;
 };
-
-function PostAdmin({ post, customClass, user, admin }) {
+function PostAdmin({  post, customClass, socket, admin  }) {
   const dispatch = useDispatch();
 
   const page = useSelector(({ postsReducer: { page } }) => page);
-  const session = useSelector((state) => state.adminReducer.user || {});
+  const session = useSelector((state) => state.sessionReducer || {});
 
   const [firstLoad, setFirstLoad] = useState(true);
   const [seeMore, setSeeMore] = useState(false);
+  const [liked, setLiked] = useState(
+    post.userLikes.filter((like) => like.user.username === session.username)
+      .length
+      ? true
+      : false
+  );
+  const [currentPost, setCurrentPost] = useState(null);
 
   const [newComment, setNewComment] = useState("");
 
   const [commentError, setCommentError] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editErrors, setEditErrors] = useState({});
+  const [reload, setReload] = useState(false);
 
   const [options, setOptions] = useState(false);
 
-  const [data, setData] = useState({
+  const [edit, setEdit] = useState({
     title: post.title,
     content: post.content,
     image: post.image,
@@ -80,6 +92,39 @@ function PostAdmin({ post, customClass, user, admin }) {
   const now = new Date().getTime();
   const TimeSpan = Math.round(Math.abs(now - createdAt) / 36e5);
 
+  // useEffect(() => {
+  //   if(currentPost){
+  //     post = currentPost
+
+  //     // console.log(post)
+  //     setReload((prev) => !prev)
+  //   }
+  // }, [currentPost])
+
+
+  useEffect(() => {
+    if(!socket) return;
+    if (Object.keys(socket).length) {
+      socket.on("getPost", (data) => {
+        if (post.idPost === data.idPost) {
+          setCurrentPost(data);
+        }
+      });
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (liked) {
+      socket.emit("sendNotification", {
+        senderName: session.username,
+        userImage: session.image,
+        receiverName: post.user.username,
+        id: post.idPost,
+        type: 1,
+      });
+    }
+  }, [liked]);
+
   useEffect(() => {
     if (firstLoad) {
       setFirstLoad(false);
@@ -87,7 +132,7 @@ function PostAdmin({ post, customClass, user, admin }) {
   }, [firstLoad, setFirstLoad]);
 
   useEffect(() => {
-    setData({
+    setEdit({
       title: post.title,
       content: post.content,
       image: post.image,
@@ -102,12 +147,19 @@ function PostAdmin({ post, customClass, user, admin }) {
   const submitComment = (e) => {
     e.preventDefault();
     if (commentError) return;
-    dispatch(commentPost(post.idPost, newComment, session.username));
+    dispatch(commentPost(post.idPost, newComment, session.username, socket));
+    socket.emit("sendNotification", {
+      senderName: session.username,
+      userImage: session.image,
+      receiverName: post.user.username,
+      type: 2,
+    });
   };
 
   const handleDelete = () => dispatch(deletePost(post.idPost));
+
   const handleEditMode = (mode) => {
-    setData({
+    setEdit({
       title: post.title,
       content: post.content,
       image: post.image,
@@ -115,27 +167,29 @@ function PostAdmin({ post, customClass, user, admin }) {
     setEditMode(mode);
   };
 
-  const handleLike = async (e) => {
-    let obj;
+  const handleLike = (e) => {
     if (session.username) {
-      obj = await dispatch(
-        likePost({ postIdPost: post.idPost, userId: session.username })
+      dispatch(
+        likePost({ postIdPost: post.idPost, userId: session.username }, socket)
       );
+
+      liked ? setLiked(false) : setLiked(true);
     }
-    dispatch(updatePage(true, obj.payload.posts));
   };
 
   function handleChange({ target: { name, value } }) {
     if (
       value === "" &&
-      ((!data.content && name === "image") ||
-        (!data.image && name === "content") ||
+      ((!edit.content && name === "image") ||
+        (!edit.image && name === "content") ||
         name === "title")
     ) {
       return;
     }
-    setData((old) => ({ ...old, [name]: value }));
+    setEdit((old) => ({ ...old, [name]: value }));
   }
+
+  const submitEdit = (e) => dispatch(updatePost(post.idPost, edit));
 
   const handleOptions = () => setOptions((old) => !old);
 
@@ -148,99 +202,121 @@ function PostAdmin({ post, customClass, user, admin }) {
 
   const hanbleBanPost = (e) =>{
     e.preventDefault();
-    dispatch(banPost(e.target.value))
+    dispatch(banPost(e.target.value));
+    socket.emit("sendNotification", {
+      senderName: session.username,
+      userImage: session.image,
+      receiverName: post.user.username,
+      type: 2,
+    });
+    alert('Ban, successfully applied');
+  }
+
+
+  const handleBanComment = (e) => {
+    e.preventDefault();
+    dispatch(deleteComment(e.target.value));
+    alert('Comment deleted successfully')
   }
 
   return (
     <div className={styles.container + ` ${customClass}`}>
-      {session.username === post.user.username ? (
-        <div className={styles.options}>
-          <button onClick={handleOptions} className={styles.optionsHandler}>
-            <BiDotsVerticalRounded
-              style={{ color: "#aaa", width: "2em", height: "2em" }}
-            />
-          </button>
+     {session.username !== post.user.username ? (
+      <div className={styles.options}>
+      <button onClick={handleOptions} className={styles.optionsHandler}>
+        <BiDotsVerticalRounded
+          style={{ color: "#1e1e1e", width: "2em", height: "2em" }}
+        />
+      </button>
 
-          {editMode ? (
-            <li>
-              <button
-                onClick={() => {
-                  handleEditMode(false);
-                }}
-              >
-                cancel
-              </button>
-            </li>
-          ) : (
-            ""
-          )}
-
-          <div
-            className={`${options ? styles.show : styles.hide} ${
-              styles.optionsMenu
-            }`}
+      {editMode ? (
+        <li>
+          <button
+            onClick={() => {
+              handleEditMode(false);
+            }}
           >
-            <button onClick={() => handleEditMode(true)}>
-              <BsFillPencilFill />
-              Edit
-            </button>
-            <button
-              className={styles.danger}
-              onClick={() => {
-                handleDelete();
-              }}
-            >
-              <GoTrashcan style={{ color: "#ff5555" }} />
-              Delete
-            </button>
-          </div>
-        </div>
+            cancel
+          </button>
+        </li>
       ) : (
         ""
       )}
+
+      <div
+        className={`${options ? styles.show : styles.hide} ${
+          styles.optionsMenu
+        }`}
+      >
+        <button value={post.idPost}
+          name="Ban Post"
+          onClick={(e) => hanbleBanPost(e)}>
+          <BsFillPencilFill />
+          Ban
+        </button>
+        <button
+          className={styles.danger}
+          onClick={() => {
+            handleDelete();
+          }}
+        >
+          <GoTrashcan style={{ color: "#fff" }} />
+          Ban 
+        </button>
+        </div>
+        </div>
+      ) : (
+            ""
+      )}
       
-      {post.ban === false?
-      <div>
-        <ul className={styles.tags}>
-        {post.tag.map((tag, i) => (
-          <li key={i}>{tag}</li>
-        ))}
-      </ul>
-      <button value={post.idPost}
+      <Tags tags={post.tag} />
+     
+      {/* <button value={post.idPost}
         name="Ban Post"
-        onClick={(e) => hanbleBanPost(e)}>Ban POST</button>
+        onClick={(e) => hanbleBanPost(e)}>Ban POST</button> */}
       <Link
         className={styles.userContainer}
         to={`/profileAdmin/${post.user.username}`}
       >
-        <img
-          className={styles.avatar}
-          src={post.user.image || image}
-          alt="avatar"
+        
+        <UserCardAdmin
+          toRight
+          showImage
+          showName
+          user={{ username: post.user.username }}
+          other={`Posted ${TimeSpan}hr ago`}
         />
-        <div>
-          <span className={styles.username}>{post.user.username}</span>
-          <span className={styles.github}>Posted {TimeSpan}hr</span>
-        </div>
       </Link>
+
       <div className={styles.postBody}>
         {editMode ? (
-          <input
-            value={data.title}
-            name="title"
-            onChange={(e) => handleChange(e)}
-          />
+          <label>
+            <div className="input-group">
+              <input
+                value={edit.title}
+                name="title"
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          </label>
         ) : (
           <h3>{post.title}</h3>
         )}
 
         {editMode ? (
           <div>
-            <textarea
-              value={data.content}
-              name="content"
-              onChange={(e) => handleChange(e)}
-            />
+            <label>
+              <div className="input-group">
+                <textarea
+                  value={edit.content}
+                  name="content"
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
+            </label>
+            <button className={styles.submitEdit} onClick={submitEdit}>
+              Submit
+            </button>
           </div>
         ) : (
           <div
@@ -263,6 +339,9 @@ function PostAdmin({ post, customClass, user, admin }) {
           </div>
         )}
       </div>
+      
+
+
       {post.imageData ? (
         <img
           className={styles.postImage}
@@ -274,34 +353,32 @@ function PostAdmin({ post, customClass, user, admin }) {
       )}
       <div className={styles.actions}>
         <button className={!session.username ? "" : ""} onClick={handleLike}>
-          {post.userLikes.filter(
-            (user) => user.user.username === session.username
-          ).length ? (
-            <MdFavorite color="red" />
+          {liked ? (
+            <MdFavorite className={styles.icons} color="#f55" />
           ) : (
-            <MdFavoriteBorder />
+            <MdFavoriteBorder className={styles.icons} />
           )}
-          {post.userLikes.length} |
-          {/* <span>
-            {post.likes[post.likes.length - 1]},{" "}
-            {post.likes[post.likes.length - 2]}
-          </span> */}
+          {post.userLikes.length}
         </button>
+
         <button>
-          <MdOutlineModeComment /> {post.comments && post.comments.length}
-        </button>
-        <button>
-          <MdShare /> Share
+          <MdOutlineModeComment />{" "}
+          {currentPost
+            ? currentPost.comments && currentPost.comments.length
+            : post.comments && post.comments.length}
         </button>
       </div>
 
       {session.username ? (
         <div className={styles.newCommentContainer}>
-          <span className={styles.maxLength}>{newComment.length} / 1000</span>
+          <div className={styles.inline}>
+            <span className={styles.maxLength}>{newComment.length} / 1000</span>
+            <span>{commentError}</span>
+          </div>
           <form className={styles.newComment} onSubmit={submitComment}>
             <label className={commentError ? "error" : ""}>
               <div className="input-group">
-                <textarea
+                <input
                   onChange={handleComment}
                   name="comment"
                   type="text"
@@ -309,30 +386,47 @@ function PostAdmin({ post, customClass, user, admin }) {
                   placeholder="New comment..."
                 />
               </div>
-              <button type="submit">
-                <MdSend className={styles.icons} />
-              </button>
             </label>
-            <span>{commentError}</span>
+            {newComment.length && !commentError ? (
+              <button type="submit">
+                <MdSend
+                  className={styles.icons}
+                  style={{ margin: "0", color: "#fff" }}
+                />
+              </button>
+            ) : (
+              <></>
+            )}
           </form>
         </div>
       ) : (
         ""
       )}
 
-      {post.comments && post.comments.length ? (
+      {currentPost ? (
+        currentPost.comments && currentPost.comments.length ? (
+          <ul className={styles.comments}>
+            <h5 style={{ margin: "1em 0 0 0" }}>Comments</h5>
+            {currentPost.comments.map((comment, i) =>
+              i < 3 ? <CommentAdmin key={i} comment={comment} handleBanComment={handleBanComment}/> : <></>
+            )}
+          </ul>
+        ) : (
+          ""
+        )
+      ) : post.comments && post.comments.length ? (
         <ul className={styles.comments}>
-          {post.comments.map((comment) => (
-            <Comment comment={comment} />
-          ))}
+          <h5 style={{ margin: "1em 0 0 0" }}>Comments</h5>
+          {post.comments.map((comment, i) =>
+            i < 3 ? <CommentAdmin key={i} comment={comment} handleBanComment={handleBanComment}/> : <></>
+          )}
         </ul>
       ) : (
         ""
-      )} 
+      )}
       </div>
-      : ''}
-    </div>
   );
 }
 
 export default PostAdmin;
+

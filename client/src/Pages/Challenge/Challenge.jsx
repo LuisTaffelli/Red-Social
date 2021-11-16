@@ -33,7 +33,7 @@ export default function Challenge(props) {
   };
 
   const initialVimTest = getNewVimTest();
-  const [vimTest, setVimTest] = useState(initialVimTest);
+  const [/*vimTest, */ setVimTest] = useState(initialVimTest);
   const [victories, setVictories] = useState(0);
   const [game, setGame] = useState(false);
 
@@ -51,13 +51,18 @@ export default function Challenge(props) {
     ({ postsReducer: { page, totalPages } }) => [page, totalPages]
   );
 
+  // console.log(page)
+  // console.log(totalPages)
+  console.log(posts, "posts")
+
+
   useEffect(() => {
     if (page === -1) {
       window.scroll(0, 0);
       dispatch(updatePage(0));
       return;
     }
-    dispatch(getPosts(page));
+    dispatch(getPosts(page,"","cronologico"));
   }, [dispatch, page, first, totalPages]);
 
   // const submitCode = () => {

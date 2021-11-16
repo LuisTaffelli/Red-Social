@@ -1,258 +1,254 @@
-.container * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    text-decoration: none;
-  }
-  
-  .container {
-    --pX: 1.5em;
-    --c-bg: var(--c-lightPost);
-    --c-avatar-bg: var(--c-blue);
-    --c-font: var(--c-dark);
-  
-    position: relative;
-  
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 30em;
-    min-width: 300px;
-    margin: 2em auto 0 auto;
-    padding: 1em 0;
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: var(--c-bg);
-    box-shadow: 0 1px 2px #0001;
-  }
-  
-  .options {
-    position: absolute;
-    top: 1em;
-    right: var(--pX);
-    align-self: flex-end;
-  }
-  .optionsHandler {
-    background-color: transparent;
-    border: none;
-  }
-  
-  .optionsMenu {
-    position: absolute;
-    right: 0;
-    background-color: #fff;
-    box-shadow: 0 0.5em 1em #0001;
-    padding: 1em;
-    border-radius: 1em;
-  }
-  .optionsMenu > button {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: transparent;
-  
-    border: none;
-    margin: 1em 0 0 0;
-    width: 100%;
-  }
-  
-  .danger {
-    color: #f55;
-  }
-  
-  .hide {
-    display: none;
-  }
-  .show {
-    display: block;
-  }
-  
-  .avatar {
-    object-fit: cover;
-    object-position: center;
-    width: 3em;
-    height: 3em;
-    background-color: var(--c-avatar-bg);
-    border-radius: 100%;
-  }
-  
-  .userContainer {
-    color: var(--c-font);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 0.5em 0 var(--pX) var(--pX);
-  }
-  .userContainer:hover .avatar {
-    background-color: var(--c-enfasis);
-  }
-  
-  .userContainer > div {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 0 1em;
-  }
-  .userContainer .username {
-    font-weight: bold;
-  }
-  .userContainer .github {
-    margin-top: 0.25em;
-    font-size: 0.9rem;
-  }
-  
-  .postBody {
-    padding: 0 var(--pX) 0 var(--pX);
-    width: 100%;
-  }
-  
-  .mainContent {
-    position: relative;
-    max-height: 6rem;
-    overflow-y: hidden;
-    transition: all 0.25s;
-    margin: 0 auto;
-  }
-  
-  .expand {
-    max-height: max-content;
-  }
-  
-  .text {
-    word-break: break-all;
-    font-size: 1rem;
-    line-height: 1.45rem;
-    margin: 0.5em 0 0 0;
-  }
-  
-  .seeMore {
-    position: absolute;
-    bottom: -0.15em !important;
-    right: 0;
-    z-index: 3;
-    padding: 0.5em 0.5em 0 0.5em;
-    border: none;
-    background-color: var(--c-lightPost);
-    color: var(--c-light-blue);
-    font-size: 0.9rem;
-    cursor: pointer;
-    width: max-content;
-  }
-  .seeMore > span {
-    margin-right: 0.25rem;
-  }
-  .seeMore:hover {
-    color: var(--c-enfasis);
-  }
-  
-  .postImage {
-    width: 100%;
-    max-height: 20rem;
-    object-fit: cover;
-    background-color: #aaa;
-    margin: 2em 0 0 0;
-  }
-  
-  .tags {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 0 var(--pX) 1em var(--pX);
-  }
-  
-  .tags > li {
-    list-style: none;
-    padding: 0.25em 1em;
-    font-size: 0.85rem;
-    color: #fff;
-    background-color: var(--c-blue);
-    border-radius: 4px;
-  }
-  
-  .tags > li:not(:first-child) {
-    margin: 0 0.25em;
-  }
-  
-  .info {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin: 0 0 1em 0;
-    font-size: 0.8rem;
-  }
-  
-  .actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 1.25em var(--pX) 1em var(--pX);
-    width: 100%;
-  }
-  
-  .actions > button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    font-size: 0.9rem;
-    font-weight: 300;
-    cursor: pointer;
-  }
-  
-  .icons {
-    margin-right: 0.5em;
-  }
-  
-  .newCommentContainer {
-    width: 100%;
-    padding: 0 var(--pX);
-  }
-  
-  .newComment > label {
-    width: 100%;
-    display: flex !important;
-    flex-direction: row;
-  }
-  
-  .newComment textarea {
-    resize: none;
-    padding: 1em;
-    height: calc(1rem + 2em);
-  }
-  
-  .newComment button[type="submit"] {
-    max-width: 7em;
-    border-radius: 0 4px 4px 0;
-  }
-  
-  .icons {
-    transform: translateX(4px);
-    width: 1.25em;
-    height: 1.25em;
-  }
-  
-  .maxLength {
-    font-size: 0.8rem;
-    color: #888;
-    width: 90%;
-    margin: 0 auto;
-    text-align: right;
-  }
-  
-  .disabled {
-    color: #aaa;
-    cursor: default;
-  }
-  
-  .mention {
-    color: #59d;
-  }
-  
-  .comments {
-    width: 100%;
-    padding: 0 var(--pX);
-    background-color: #fafafa;
-  }
-  
+.container {
+  --pX: 1.5em;
+  --c-bg: var(--c-lightPost);
+  --c-avatar-bg: var(--c-blue);
+  --c-font: var(--c-dark);
+
+  position: relative;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 40em;
+  min-width: 320px;
+  margin: 2em auto 0 auto;
+  padding: 1em 0;
+  border-radius: 10px;
+  gap: 1em;
+  overflow: hidden;
+  background-color: var(--c-bg);
+  box-shadow: 0 1px 2px #0001;
+}
+
+.options {
+  position: absolute;
+  top: 1em;
+  right: var(--pX);
+  align-self: flex-end;
+}
+.optionsHandler {
+  background-color: transparent;
+  border: none;
+}
+
+.optionsMenu {
+  position: absolute;
+  right: 0;
+  top: 2rem;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  padding: 1em;
+  border-radius: 0;
+}
+.optionsMenu button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background-color: transparent;
+  padding: 0.5em 1em;
+  font-size: 0.9rem;
+  border: none;
+  margin: 0.5em 0 0 0;
+  width: 100%;
+}
+
+.optionsMenu svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.danger {
+  background-color: #f55 !important;
+  color: #fff;
+}
+
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+
+.avatar {
+  object-fit: cover;
+  object-position: center;
+  width: 3em;
+  height: 3em;
+  border-radius: 100%;
+}
+
+.userContainer {
+  margin: 0.5em 0 var(--pX) var(--pX);
+}
+
+.postBody {
+  padding: 0 var(--pX) 0 var(--pX);
+  width: 100%;
+}
+
+.postBody label,
+.postBody button {
+  display: block;
+  margin: 1rem 0 0 0 !important;
+}
+
+.mainContent {
+  position: relative;
+  max-height: 6rem;
+  overflow-y: hidden;
+  transition: all 0.25s;
+  margin: 0 auto;
+}
+
+.expand {
+  max-height: max-content;
+}
+
+.text {
+  word-break: break-all;
+  font-size: 1rem;
+  line-height: 1rem;
+  padding: 0.5em 0 0 0;
+}
+
+.seeMore {
+  position: absolute;
+  bottom: -0.15em !important;
+  right: 0;
+  z-index: 3;
+  padding: 0.5em 0.5em 0 0.5em;
+  border: none;
+  background-color: var(--c-lightPost);
+  color: var(--c-blue);
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: max-content;
+  transition: all 0.25s;
+}
+
+.seeMore > span {
+  margin-right: 0.25rem;
+}
+
+.seeMore:hover {
+  color: var(--c-hard-blue);
+}
+
+.postImage {
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  background-color: #aaa;
+  margin: 2em 0 0 0;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 1em 0;
+  font-size: 0.8rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.actions > button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 300;
+  width: max-content;
+  padding: var(--pX) var(--pX);
+  cursor: pointer;
+}
+
+.icons {
+  width: 1.25em;
+  height: 1.25em;
+  margin-right: 0.5em;
+}
+.actions > button:hover .icons {
+  color: #f55 !important;
+}
+
+.newCommentContainer {
+  width: 100%;
+  padding: 0 var(--pX);
+}
+
+.newComment > label {
+  display: flex !important;
+  flex-direction: row;
+}
+
+.newComment input {
+  resize: none;
+  padding: 1em;
+  height: calc(1rem + 2em);
+}
+
+.inline {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.newComment button[type="submit"] {
+  max-width: 7em;
+  border-radius: 5em;
+  margin: 0.5em 0 0.5em auto;
+  padding: 1em;
+  box-shadow: var(--bs-blue);
+}
+
+.maxLength {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: right;
+}
+
+.disabled {
+  color: #aaa;
+  cursor: default;
+}
+
+.mention {
+  color: #59d;
+}
+
+.comments {
+  width: 100%;
+  padding: 0 var(--pX);
+}
+.users {
+  color: #888;
+}
+
+.submitEdit {
+  border: none;
+  padding: 0.75em;
+  border-radius: 5em;
+  text-align: center;
+  color: var(--c-blue);
+  font-weight: 500;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 2px solid var(--c-blue);
+  transition: all 0.25s;
+}
+
+.submitEdit:hover {
+  background-color: var(--c-blue);
+  color: #fff;
+}

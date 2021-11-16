@@ -1,0 +1,51 @@
+.comment a {
+  display: block;
+  margin: 1em 0 0 0;
+  color: #1e1e1e;
+  text-decoration: none;
+}
+
+.comment {
+  position: relative;
+  display: block;
+  list-style: none;
+  padding: 0 0 0 1em !important;
+}
+
+.comment::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 2px;
+  background-color: var(--c-blue);
+}
+
+.comment > p {
+  margin: 0.5em 0 0 0;
+  color: #555;
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.user {
+  display: flex !important;
+  align-items: center;
+}
+
+.user img {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 100%;
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0 0 0 0;
+}
+
+.user h4 {
+  margin: 0 0 0 1em;
+  width: max-content;
+  max-width: max-content;
+}

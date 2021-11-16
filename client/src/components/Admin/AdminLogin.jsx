@@ -1,49 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import style from "./styless.css"
+import style from "./styless.css";
 import { Link } from "react-router-dom";
 import { loginAdmin } from "../../Redux/actions/Admin";
 import validate from "../../utils/validate.js";
 import { Redirect } from "react-router";
 
-export default function AdminLogin(){
-    const dispatch = useDispatch();
-    // var [flags, setFlags]= useState(true)
-    const [input, setInput] = useState({
-      username: "",
-      password:"",
+export default function AdminLogin() {
+  const dispatch = useDispatch();
+  // var [flags, setFlags]= useState(true)
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+  });
+
+  var admin = useSelector((state) => state.adminReducer);
+
+  const handleChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value.replaceAll(/^\s+/g, ""),
     });
-    
-    var admin = useSelector(state => state.adminReducer)
-      
-    const [error, setError] = useState({});
-    
-    console.log(admin)
-    const handleChange = (e)=>{
-        setInput({
-            ...input,
-            [e.target.name]: e.target.value.replaceAll(/^\s+/g, ""),
-          });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errors = validate(input);
+    if (Object.values(errors).filter((error) => error).length) {
+      console.log("Usuario o contrasena no validas");
+    } else {
+      dispatch(loginAdmin(input));
     }
-    
-    const handleSubmit=(e)=>{
-        e.preventDefault();
-        const errors = validate(input);
-        if (Object.values(errors).filter((error) => error).length) {
-            alert("Usuario o contrasena no validas");
-          }else{ 
-            setError({message:"Error your not admin"})
-            dispatch(loginAdmin(input));
-        }        
-      }
-    
-    return(
-        <div>{
-          
-          admin.admin === true ? (
-            <Redirect to="/homeAdmin"/>
-          ):(
-            <form className={style.container} onSubmit={(e) => handleSubmit(e)}>
+  };
+
+  return (
+    <div>
+      {admin.admin === true ? (
+        <Redirect to="/homeAdmin" />
+      ) : (
+        <form className={style.container} onSubmit={(e) => handleSubmit(e)}>
           <div className={style.label}>
             <label>Username</label>
             <input
@@ -53,7 +48,6 @@ export default function AdminLogin(){
               onChange={(e) => handleChange(e)}
             />
           </div>
-
           <div className={style.label}>
             <label>Password</label>
             <input
@@ -63,13 +57,11 @@ export default function AdminLogin(){
               onChange={(e) => handleChange(e)}
             />
           </div>
-          
           <button type="submit">Login</button>
-          <hr style={{ margin: "4%" }}></hr>
           <Link to="/signup">SignUpLogin</Link>
         </form>
-          )
-        }
-        </div>
-    )
+      )}
+    </div>
+  );
 }
+

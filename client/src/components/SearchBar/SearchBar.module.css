@@ -1,9 +1,15 @@
 .inputData {
+  display: flex;
+  align-items: center;
   position: relative;
   margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 .icon {
   width: 1.25em;
   height: 1.25em;
+  color: #fff;
 }

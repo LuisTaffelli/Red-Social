@@ -1,128 +1,136 @@
 .home {
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: auto auto auto;
+  display: grid;
+  grid-template-columns: auto 45vw auto;
+  gap: 8rem;
+  margin: 0 auto;
+  width: 100vw;
+}
+
+.home li {
+  list-style: none;
+}
+
+.right,
+.left {
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.noScroll {
+  max-height: calc(100vh - 4em);
+  overflow: hidden;
+}
+
+.newPost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 10;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100vh;
+  background-color: #000a;
+}
+
+.newPostBtn {
+  position: fixed;
+  left: 5%;
+  top: 40%;
+  z-index: 2;
+}
+
+.newPostBtn button {
+  margin-top: 4%;
+  width: 18vw;
+  height: 6vh;
+  background-color: #4a9bbd;
+  border-radius: 4px;
+  color: white;
+  border: none;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cargando {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0 0 0;
+  text-align: center;
+  font-size: 1.25rem;
+  min-height: 7em;
+}
+
+.tags {
+  margin: 1rem 0.5rem;
+}
+.tags li:not(:first-child) {
+  margin: 0.75rem 0 0 0;
+}
+.tag {
+  color: var(--c-blue);
+  font-size: 1rem;
+}
+
+.newPostOpen {
+  border-radius: 5em;
+  margin: 2em 0 0 0;
+  background-color: #fff;
+  padding: 0.25em 0.5em;
+  display: flex;
+  align-items: center;
+}
+
+.createPost {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 1em;
+  text-align: left;
+  gap: 0.5em;
+  border-radius: 5em;
+  background-color: transparent;
+  border: none;
+  outline: 2px solid #aaa;
+  font-size: 1rem;
+  color: #888;
+  height: 2.5em;
+}
+
+.createPost:hover {
+  outline: 2px solid var(--c-blue);
+  color: var(--c-blue);
+}
+
+@media screen and (max-width: 1100px) {
+  .home {
+    grid-template-columns: 60vw auto;
+    gap: 5rem;
+  }
+  .center {
+    margin: 0 0 0 5rem;
+  }
+  .left {
+    display: none;
+  }
+}
+@media screen and (max-width: 800px) {
+  .home {
     width: 75vw;
+    grid-template-columns: auto;
+    gap: 0;
+  }
+  .center {
     margin: 0 auto;
-    gap: 1em;
-  }
-  
-  .home li {
-    list-style: none;
-  }
-  .home section {
-    min-width: 320px;
-  }
-  
-  .home section:last-child {
-    text-align: right;
-  }
-  
-  .home section:last-child > div {
-    background-color: #fff;
-    margin-top: 2em;
-    border-radius: 10px;
-    padding: 1em;
-  }
-  
-  .home section {
-    margin: 1em auto;
-  }
-  
-  .sectionPosts {
-    max-width: max-content;
-    margin: 0 auto;
-  }
-  
-  .noScroll {
-    max-height: calc(100vh - 4em);
-    overflow: hidden;
-  }
-  
-  .newPost {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    z-index: 10;
-    top: 0%;
-    left: 0%;
     width: 100%;
-    height: 100vh;
-    background-color: #000a;
   }
-  
-  .newPostBtn {
-    position: fixed;
-    left: 5%;
-    top: 40%;
-    z-index: 2;
+  .left {
+    display: none;
   }
-  
-  .newPostBtn button {
-    margin-top: 4%;
-    width: 18vw;
-    height: 6vh;
-    background-color: #4a9bbd;
-    border-radius: 4px;
-    color: white;
-    border: none;
-    font: inherit;
-    padding: 0;
-    cursor: pointer;
+  .right {
+    display: none;
   }
-  
-  .cargando {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-    background-color: var(--c-light);
-    text-align: center;
-    font-size: 1.25rem;
-    min-height: 7em;
-  }
-  
-  @media screen and (max-width: 1400px) {
-    .home {
-      width: 90vw;
-      grid-template-columns: auto auto auto;
-    }
-  }
-  
-  @media screen and (max-width: 1200px) {
-    .home {
-      width: 95vw;
-      grid-template-columns: auto auto;
-    }
-    .home section:last-child {
-      display: none;
-    }
-  }
-  
-  @media screen and (max-width: 1200px) {
-    .home {
-      width: 80vw;
-      grid-template-columns: auto auto;
-    }
-  
-    .home section:last-child {
-      display: none;
-    }
-  }
-  
-  @media screen and (max-width: 900px) {
-    .home {
-      width: 98vw;
-      grid-template-columns: auto;
-    }
-  
-    .home section:first-child {
-      display: none;
-    }
-  
-    .home section:last-child {
-      display: none;
-    }
-  }
-  
+}

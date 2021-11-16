@@ -17,8 +17,7 @@ ReactDOM.render(
       <BrowserRouter>
         <IconContext.Provider
           value={{
-            color: "#1e1e1e",
-            size: "1em",
+            color: "#333",
             style: {
               verticalAlign: "middle",
             },

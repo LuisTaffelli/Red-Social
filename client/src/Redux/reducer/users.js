@@ -1,5 +1,5 @@
 
-import { SEARCH_USER, GET_USER, REMOVE_PROFILE, GET_USERS,NEW_MSG, SOCKET_CONN,BAN_USER_ADMIN  } from "../actions/Users";
+import { SEARCH_USER, GET_USER, REMOVE_PROFILE, GET_USERS,NEW_MSG, SOCKET_CONN,BAN_USER_ADMIN, FOLLOW_UNFOLLOW } from "../actions/Users";
 
 
 const initialState = {
@@ -49,6 +49,11 @@ export default function root(state = initialState, action) {
       };
 
     case BAN_USER_ADMIN:
+      return{
+        ...state
+      }
+
+    case FOLLOW_UNFOLLOW:
       return{
         ...state
       }

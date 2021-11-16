@@ -11,7 +11,7 @@ import styles from "./Messenger.module.css";
 
 export default function Messenger() {
   const user = useSelector((store) => store.sessionReducer);
-  const socket = useSelector((state) => state.usersReducer.socket)
+  const socket = useSelector((state) => state.usersReducer.socket);
 
   const dispatch = useDispatch();
 
@@ -24,13 +24,13 @@ export default function Messenger() {
   const scrollRef = useRef();
 
   useEffect(() => {
-    if(!Object.keys(socket).length){
+    if (!Object.keys(socket).length) {
       dispatch(socketConnection(user.username));
-    } 
-  }, [])
+    }
+  }, [dispatch, socket, user.username]);
 
   useEffect(() => {
-    if(Object.keys(socket).length){
+    if (Object.keys(socket).length) {
       socket.on("getMessage", (data) => {
         setArrivalMessage({
           sender: data.senderId,
@@ -38,8 +38,8 @@ export default function Messenger() {
           createdAt: Date.now(),
         });
       });
-    } 
-  }, []);
+    }
+  }, [socket]);
 
   useEffect(() => {
     arrivalMessage &&
@@ -48,15 +48,15 @@ export default function Messenger() {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    if(Object.keys(socket).length){
+    if (Object.keys(socket).length) {
       socket.on("getUsers", (users) => {
         console.log(users);
         // setOnlineUsers(
         //   user.followings.filter((f) => users.some((u) => u.userId === f))
         // );
       });
-    } 
-  }, [user]);
+    }
+  }, [socket, user]);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -76,7 +76,7 @@ export default function Messenger() {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        console.log(currentChat.id);
+        //console.log(currentChat.id);
         const res = await axios.get(
           "http://localhost:3001/message/" + currentChat?.id
         );
@@ -181,4 +181,3 @@ export default function Messenger() {
     </>
   );
 }
-

@@ -27,20 +27,23 @@ export default function Login() {
     setErrors({ ...errors, [name]: validate(name, value) });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!Object.values(errors).filter((error) => error).length) {
-      dispatch(logIn(input));
-
-      setInput({
-        username: "",
-        password: "",
-      });
-      setErrors({
-        username: "",
-        password: "",
-      });
+      let errores = await dispatch(logIn(input));
+      if (errores.type === "ERROR") {
+        alert("Usuario o Contrasena invalidos")
+      }else{
+        setInput({
+          username: "",
+          password: "",
+        });
+        setErrors({
+          username: "",
+          password: "",
+        });
+      }
     }
   }
 
@@ -84,7 +87,7 @@ export default function Login() {
           </div>
         </label>
         <span>{errors.password}</span>
-        <Link className="btn simple" to="/signup">
+        <Link className="btn simple" to="/accounts/password/reset/">
           forgot password?
         </Link>
 

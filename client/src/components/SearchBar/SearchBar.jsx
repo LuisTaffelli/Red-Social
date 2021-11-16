@@ -12,7 +12,6 @@ export default function SearchBar(props) {
 
   const [input, setInput] = useState("");
   const [show, setShow] = useState(false);
-  const [showSearchBar, setShowSearchBar] = useState(false);
 
   useEffect(() => dispatch(searchUser(input)), [input, dispatch]);
 
@@ -22,21 +21,18 @@ export default function SearchBar(props) {
 
   const handleList = (e) => {
     setShow(e);
-    setShowSearchBar(e);
   };
 
   return (
     <label className={style.inputData}>
-      <div className="input-group">
-        <BiSearch className={style.icon} />
-        <input
-          onBlur={() => handleList(false)}
-          onFocus={() => handleList(true)}
-          onChange={handleChange}
-          placeholder="Search Users"
-        />
-        <UserList show={show} users={users} input={input} />
-      </div>
+      <BiSearch className={style.icon} />
+      <input
+        onBlur={() => handleList(false)}
+        onFocus={() => handleList(true)}
+        onChange={handleChange}
+        placeholder="Search Users"
+      />
+      <UserList show={show} users={users} input={input} />
     </label>
   );
 }

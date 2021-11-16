@@ -1,4 +1,4 @@
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import Home from "./Pages/Home/Home";
@@ -10,6 +10,7 @@ import NavBar from "./components/NavBar/NavBar.js";
 
 import Messenger from "./Pages/Messenger/Messenger";
 import Support from "./components/Support/Support";
+import Settings from "./Pages/Settings/Settings";
 
 //Admin
 import AdminLogin from "./components/Admin/AdminLogin";
@@ -17,21 +18,24 @@ import AdminSupport from "./components/Admin/AdminSupport";
 import HomeAdmin from "./components/Admin/HomeAdmin/HomeAdmin";
 import ProfileAdmin from "./components/Admin/ProfileAdmin/ProfileAdmin";
 
-import Popup from "./components/Support/SupportLocalPopUp.jsx";
+import NewRegister from "./components/NewRegister/NewRegister.jsx";
+
+import PrivateRoute from "./components/TypeRoutes/PrivateRoute";
 
 import ForgetPassword from "./components/ForgetPassword/ForgetPassword.jsx";
+import ResetPassword from "./components/ResetPassword/ResetPassword.jsx";
+
 // Variables CSS
 import "./App.css";
-import UserCard from "./components/UserCard/UserCard";
 import { useDispatch, useSelector } from "react-redux";
 import { removeError } from "./Redux/actions/Errors";
 import { Link } from "react-router-dom";
 import { BiMessageAltDetail } from "react-icons/bi";
 
 // chat v.2
-import Chat from "./components/Chat/Chat";
 import Challenge from "./Pages/Challenge/Challenge";
 import ChallengeComment from "./Pages/ChallengeComment/ChallengeComment";
+import { changeTheme } from "./Redux/actions/Theme";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,11 +43,21 @@ function App() {
   const isLanding = useLocation().pathname === "/";
 
   const errors = useSelector((state) => state.errorsReducer);
+  const session = useSelector((state) => !!state.sessionReducer.username);
+  const isDark = useSelector((state) => state.themeReducer.theme);
 
-  const handleDelete = (id) => dispatch(removeError());
+  const handleDelete = (id) => dispatch(removeError(id));
 
   return (
-    <div className="App">
+    <div className={`App ${isDark ? "dark" : ""}`}>
+      {/*<button
+        className="top"
+        onClick={() => {
+          dispatch(changeTheme(!isDark));
+        }}
+      >
+        Change Theme
+      </button>*/}
       {errors && errors.length ? (
         <ul className="errors">
           {errors.map((error) => (
@@ -56,7 +70,7 @@ function App() {
         ""
       )}
 
-      {!isLanding && (
+      {!isLanding && session && (
         <Link className="message" to="/messenger">
           <BiMessageAltDetail
             style={{ margin: "0", width: "1.5em", height: "1.5em" }}
@@ -72,7 +86,6 @@ function App() {
         <Route path="/home" component={Home} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
-        <Route path="/support" component={Support} />
         <Route path="/loginAdmin" component={AdminLogin} />
         <Route path="/supportAdmin" component={AdminSupport} />
         <Route exact path="/challenge" component={Challenge} />
@@ -86,9 +99,16 @@ function App() {
             },
           }) => <ProfileAdmin username={username} />}
         />
+        <Route path="/n/signup" component={NewRegister} />
 
-        <Route exact path="/chat/test" component={Chat} />
+        <Route
+          exact
+          path="/accounts/password/reset/"
+          component={ResetPassword}
+        />
         <Route exact path="/auth/reset-password" component={ForgetPassword} />
+
+        {/* Profile */}
         <Route
           path="/profile/:username"
           render={({
@@ -98,20 +118,20 @@ function App() {
           }) => <Profile username={username} />}
         />
 
-        <Route exact path="/messenger" component={Messenger} />
-        <Route
-          path="/test"
-          render={() => {
-            return <Popup />;
-          }}
+        <PrivateRoute path="/settings" component={Settings} />
+        <PrivateRoute exact path="/messenger" component={Messenger} />
+        <PrivateRoute path="/support" component={Support} />
+        <PrivateRoute path="/supportAdmin" component={AdminSupport} />
+        <PrivateRoute path="/challenge" component={Challenge} />
+        <PrivateRoute path="/homeAdmin" component={HomeAdmin} />
+        <PrivateRoute
+          path="/profileAdmin/:username"
+          render={({ match: { params: username } }) => (
+            <ProfileAdmin username={username} />
+          )}
         />
 
-        <Route
-          path="/algo"
-          render={() => {
-            return <UserCard />;
-          }}
-        />
+        <Route path="/" render={() => <Redirect to="/home" />} />
       </Switch>
     </div>
   );

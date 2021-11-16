@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { fadeInDown, fadeInLeft, fadeInRight, pulse } from "react-animations";
+import { fadeInDown, fadeInLeft, fadeInRight } from "react-animations";
 
 const toDown = keyframes`${fadeInDown}`;
 const toLeft = keyframes`${fadeInLeft}`;
@@ -28,13 +28,30 @@ export const Section = styled.section`
     right: -5em;
     bottom: -5em;
   }
+
+  @media screen and (max-width: 600px) {
+    padding: 0;
+
+    & > img {
+      width: 15em;
+    }
+  }
 `;
 
 export const Headline = styled.h1`
   z-index: 2;
   font-size: 3em;
   font-weight: 600;
+  color: ${(props) => {
+    return props.isDark ? "#fff" : "#1e1e1e";
+  }}
+
   animation: 1s ${toDown};
+
+  @media screen and (max-width: 600px) {
+    margin: 0 auto;
+    text-align: center;
+  }
 `;
 
 export const JoinNow = styled(Link)`
@@ -61,5 +78,10 @@ export const JoinNow = styled(Link)`
   }
   &:hover svg {
     transform: translate(50%, 0);
+  }
+
+  @media screen and (max-width: 600px) {
+    margin: 0 auto;
+    text-align: center;
   }
 `;

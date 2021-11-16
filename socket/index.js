@@ -38,14 +38,31 @@ io.on("connection", (socket) => {
     });
   });
 
-  //send about a notification
-  socket.on("sendNotification", ({ senderName, receiverName, type }) => {
-    const receiver = getUser(receiverName);
-    io.to(receiver?.socketId).emit("getNotification", {
-      senderName,
-      type,
-    });
+   //send and get message
+   socket.on("reloadPostInfo", (post) => {
+    console.log(post);
+
+    io.emit("getPost", post.post);
   });
+
+  //send about a notification
+  socket.on("sendNotification", ({ senderName, receiverName, id, userImage, type }) => {
+    const receiver = getUser(receiverName);
+
+    // if(senderName !== receiverName){
+      io.to(receiver?.socketId).emit("getNotification", {
+        senderName,
+        id,
+        userImage,
+        type
+      });
+    // }
+  });
+
+  // follow/unfollow
+  socket.on("setFollows", (info)=>{
+    io.emit("getFollows", !info)
+  })
 
   //when disconnect
   socket.on("disconnect", () => {

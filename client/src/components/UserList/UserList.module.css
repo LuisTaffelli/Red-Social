@@ -28,7 +28,7 @@
 }
 
 .user:hover {
-  background-color: rgb(143, 143, 143);
+  background-color: var(--c-soft-blue);
 }
 ::-webkit-scrollbar {
   width: 5px;

@@ -1,0 +1,13 @@
+.form {
+  display: flex;
+  background-color: transparent;
+}
+
+.inline {
+  display: flex;
+  gap: 1rem;
+}
+
+.mt1 {
+  margin: 1rem 0 0 0;
+}

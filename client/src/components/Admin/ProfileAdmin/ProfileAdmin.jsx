@@ -5,12 +5,11 @@ import { removeProfile, getUser } from "../../../Redux/actions/Users";
 
 import PostAdmin from "../../../components/Admin/PostAdmin/PostAdmin";
 
-// import { getUser } from "../../Redux/actions/Users";
 import { updateUser } from "../../../Redux/actions/Session";
 import validate from "../../../utils/validate";
 import styles from "./stylesProfile.css";
 import Select from "react-select";
-import { BsFillPencilFill } from "react-icons/bs";
+import { BiCog } from "react-icons/bi";
 import { banUserAdmin } from "../../../Redux/actions/Users";
 
 const selectStyles = {
@@ -80,20 +79,18 @@ export default function ProfileAdmin(props) {
 
   const handleBanUser = (e) => {
     e.preventDefault();
-
     dispatch(banUserAdmin(e.target.value));
     alert("They have applied successfully");
   };
-
-  var day = new Date();
-
-  var dayBan = new Date(Date.now() + 168 * 3600 * 1000);
 
   return profile ? (
     <div>
       {profile.strike?.length === 3 ? (
         <div>
-          <img src="https://instagramers.com/wp-content/uploads/2020/11/Portada-Cuenta-inhabilitada-Instagram.png" />
+          <img
+            src="https://instagramers.com/wp-content/uploads/2020/11/Portada-Cuenta-inhabilitada-Instagram.png"
+            alt="Not found"
+          />
         </div>
       ) : (
         <main className={styles.container}>
@@ -119,7 +116,7 @@ export default function ProfileAdmin(props) {
                   className={styles.edit}
                   onClick={() => setEditar((old) => !old)}
                 >
-                  <BsFillPencilFill style={{ color: "#C94F4F" }} />
+                  <BiCog />
                   Edit
                 </button>
               ) : (

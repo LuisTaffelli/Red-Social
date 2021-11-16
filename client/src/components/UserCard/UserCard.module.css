@@ -8,12 +8,13 @@
 .column {
   display: flex;
   flex-flow: column wrap;
+  align-items: flex-start;
   gap: 0.25em;
 }
 
 .container .username {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .container img {
@@ -22,21 +23,36 @@
   display: block;
   line-height: 0;
   padding: 0;
-  box-shadow: var(--bs-blue);
-  width: 3rem;
-  height: 3rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 5rem;
 }
 
 .other {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 300;
   color: #888;
 }
 
 .noImage {
-  border: none !important;
+  /*box-shadow: var(--bs-blue);*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   box-sizing: border-box;
+  background: var(--c-blue);
+}
 
-  background: #55aaff;
+.small img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.small .username {
+  font-size: 0.9rem;
+}
+
+.small .other {
+  font-size: 0.8rem;
 }

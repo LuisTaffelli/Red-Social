@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import image from "../../images/userCard.png";
 import UserCard from "../UserCard/UserCard";
-
+import Tags from "../Tags/Tags";
+import { NavLink } from "react-router-dom";
 import {
   commentPost,
   deletePost,
   updatePost,
-  updatePage,
   likePost,
 } from "../../Redux/actions/Post";
 
@@ -19,7 +20,6 @@ import styles from "./Post.module.css";
 import {
   MdFavoriteBorder,
   MdOutlineModeComment,
-  MdShare,
   MdSend,
   MdFavorite,
 } from "react-icons/md";
@@ -51,12 +51,13 @@ const parseContent = (text) => {
   const parsed = text.split(" ").map((value) => {
     if (mentions.includes(value)) {
       return (
-        <Link
+        <NavLink
+          activeClassName={styles.active}
           className={styles.mention}
           to={`/profile/${value.slice(1, value.length)}`}
         >
           {value}
-        </Link>
+        </NavLink>
       );
     } else return " " + value + " ";
   });
@@ -67,9 +68,7 @@ const parseContent = (text) => {
 function Post({ post, customClass, user, socket, admin, type }) {
   const dispatch = useDispatch();
 
-  const page = useSelector(({ postsReducer: { page } }) => page);
   const session = useSelector((state) => state.sessionReducer || {});
-
   const [firstLoad, setFirstLoad] = useState(true);
   const [seeMore, setSeeMore] = useState(false);
   const [liked, setLiked] = useState(
@@ -78,6 +77,7 @@ function Post({ post, customClass, user, socket, admin, type }) {
       ? true
       : false
   );
+  const [currentPost, setCurrentPost] = useState(null);
 
   const [newComment, setNewComment] = useState("");
 
@@ -91,7 +91,9 @@ function Post({ post, customClass, user, socket, admin, type }) {
     title: post.title,
     content: post.content,
     image: post.image,
+    tag: post.tag,
   });
+
 
   const createdAt = new Date(post.updatedAt).getTime();
   const now = new Date().getTime();
@@ -100,14 +102,34 @@ function Post({ post, customClass, user, socket, admin, type }) {
   const [code, setCode] = useState("a = 0");
 
   useEffect(() => {
+    if (socket && Object.keys(socket).length) {
+      socket.on("getPost", (data) => {
+        if (post.idPost === data.idPost) {
+          setCurrentPost(data);
+        }
+      });
+    }
+  }, [socket, post.idPost]);
+
+  useEffect(() => {
     if (liked) {
       socket.emit("sendNotification", {
-        senderName: user,
+        senderName: session.username,
+        userImage: session.image,
         receiverName: post.user.username,
+        id: post.idPost,
         type: 1,
       });
     }
-  }, [liked]);
+  }, [
+    liked,
+    post.idPost,
+    post.username,
+    session.image,
+    session.username,
+    socket,
+    post.user.username,
+  ]);
 
   useEffect(() => {
     if (firstLoad) {
@@ -120,7 +142,13 @@ function Post({ post, customClass, user, socket, admin, type }) {
       title: post.title,
       content: post.content,
       image: post.image,
+      tag: post.tag,
     });
+    setLiked(post.userLikes.filter((like) => like.user.username === session.username)
+      .length
+      ? true
+      : false)
+      setEditMode(false)
   }, [post]);
 
   const handleComment = ({ target: { name, value } }) => {
@@ -131,28 +159,31 @@ function Post({ post, customClass, user, socket, admin, type }) {
   const submitComment = (e) => {
     e.preventDefault();
     if (commentError) return;
-    dispatch(commentPost(post.idPost, newComment, session.username));
+    dispatch(commentPost(post.idPost, newComment, session.username, socket));
     socket.emit("sendNotification", {
-      senderName: user,
+      senderName: session.username,
+      userImage: session.image,
       receiverName: post.user.username,
       type: 2,
     });
   };
 
   const handleDelete = () => dispatch(deletePost(post.idPost));
-
   const handleEditMode = (mode) => {
     setEdit({
       title: post.title,
       content: post.content,
       image: post.image,
+      tag: post.tag,
     });
     setEditMode(mode);
   };
 
   const handleLike = (e) => {
     if (session.username) {
-      dispatch(likePost({ postIdPost: post.idPost, userId: session.username }));
+      dispatch(
+        likePost({ postIdPost: post.idPost, userId: session.username }, socket)
+      );
 
       liked ? setLiked(false) : setLiked(true);
     }
@@ -168,6 +199,10 @@ function Post({ post, customClass, user, socket, admin, type }) {
       return;
     }
     setEdit((old) => ({ ...old, [name]: value }));
+  }
+
+  function handleSelect(e) {
+    setEdit((old) => ({ ...old, tag: e.map((tag) => tag.value) }));
   }
 
   const submitEdit = (e) => dispatch(updatePost(post.idPost, edit));
@@ -211,7 +246,9 @@ function Post({ post, customClass, user, socket, admin, type }) {
   let test;
   if (post.content) test = parseContent(post.content);
 
+
   const [errorTest, setErrorTest] = useState(null);
+
 
   return (
     <div className={styles.container + ` ${customClass}`}>
@@ -252,22 +289,19 @@ function Post({ post, customClass, user, socket, admin, type }) {
                 handleDelete();
               }}
             >
-              <GoTrashcan style={{ color: "#ff5555" }} />
+              <GoTrashcan style={{ color: "#fff" }} />
               Delete
             </button>
           </div>
         </div>
-      ) : (
+      ) :
         ""
-      )}
+      }
 
-      <ul className={styles.tags}>
-        {post.tag.map((tag, i) => (
-          <li key={i}>{tag}</li>
-        ))}
-      </ul>
+      <Tags tags={post.tag} mode={editMode} handleSelect={handleSelect} editTags={edit.tag}/>
 
-      <Link
+      <NavLink
+        activeClassName={styles.active}
         className={styles.userContainer}
         to={`/profile/${post.user.username}`}
       >
@@ -275,28 +309,39 @@ function Post({ post, customClass, user, socket, admin, type }) {
           toRight
           showImage
           showName
+          user={{ username: post.user.username }}
           other={`Posted ${TimeSpan}hr ago`}
         />
-      </Link>
+      </NavLink>
       <div className={styles.postBody}>
         {editMode ? (
-          <input
-            value={edit.title}
-            name="title"
-            onChange={(e) => handleChange(e)}
-          />
+          <label>
+            <div className="input-group">
+              <input
+                value={edit.title}
+                name="title"
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          </label>
         ) : (
           <h3>{post.title}</h3>
         )}
 
         {editMode ? (
           <div>
-            <textarea
-              value={edit.content}
-              name="content"
-              onChange={(e) => handleChange(e)}
-            />
-            <button onClick={submitEdit}>Submit</button>
+            <label>
+              <div className="input-group">
+                <textarea
+                  value={edit.content}
+                  name="content"
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
+            </label>
+            <button className={styles.submitEdit} onClick={submitEdit}>
+              Submit
+            </button>
           </div>
         ) : (
           <div
@@ -329,26 +374,20 @@ function Post({ post, customClass, user, socket, admin, type }) {
         ""
       )}
       <div className={styles.actions}>
-        <button className={!session.username ? "" : ""} onClick={handleLike}>
-          {post.userLikes.filter(
-            (like) => like.user.username === session.username
-          ).length ? (
+        <button className={styles.favorite} onClick={handleLike}>
+          {liked ? (
             <MdFavorite className={styles.icons} color="#f55" />
           ) : (
             <MdFavoriteBorder className={styles.icons} />
           )}
           {post.userLikes.length}
-          <span className={styles.users}>
-            {post.userLikes.length
-              ? "| " + post.userLikes[post.userLikes.length - 1].user.username
-              : ""}
-          </span>
         </button>
+
         <button>
-          <MdOutlineModeComment /> {post.comments && post.comments.length}
-        </button>
-        <button>
-          <MdShare /> Share
+          <MdOutlineModeComment className={styles.icons} />
+          {currentPost
+            ? currentPost.comments && currentPost.comments.length
+            : post.comments && post.comments.length}
         </button>
       </div>
 
@@ -472,7 +511,18 @@ function Post({ post, customClass, user, socket, admin, type }) {
         </div>
       )}
 
-      {post.comments && post.comments.length ? (
+      {currentPost ? (
+        currentPost.comments && currentPost.comments.length ? (
+          <ul className={styles.comments}>
+            <h5 style={{ margin: "1em 0 0 0" }}>Comments</h5>
+            {currentPost.comments.map((comment, i) =>
+              i < 3 ? <Comment key={i} comment={comment} /> : <></>
+            )}
+          </ul>
+        ) : (
+          ""
+        )
+      ) : post.comments && post.comments.length ? (
         <ul className={styles.comments}>
           <h5 style={{ margin: "1em 0 0 0" }}>Comments</h5>
           {post.comments.map((comment, i) =>

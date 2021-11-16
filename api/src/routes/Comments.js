@@ -41,9 +41,6 @@ router.get("/:username", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { content, username, postid } = req.body;
-
-    console.log(content, username, postid);
-
     const UserAssociation = await database_Utils.DB_UserID(username);
     const PostAssociation = await database_Utils.DB_Postsearch({ id: postid });
 

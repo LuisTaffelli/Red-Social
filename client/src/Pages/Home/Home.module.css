@@ -1,27 +1,26 @@
 .home {
   display: grid;
-  grid-template-columns: auto 2fr auto;
+  grid-template-columns: auto 45vw auto;
+  gap: 8rem;
   margin: 0 auto;
-  gap: 3em;
+  width: 100vw;
+  min-height: calc(100vh - 4rem);
 }
 
 .home li {
   list-style: none;
 }
 
-.home section:first-child {
-  display: flex;
-  flex-flow: column wrap;
-}
-
-.home section > div {
-  padding: 1em;
+.right,
+.left {
+  padding: 1rem;
   background-color: #fff;
-  width: 100%;
 }
 
-.sectionPosts {
-  margin: 0 auto;
+.center {
+  margin: 0 auto 2rem auto;
+  max-width: 30rem;
+  min-width: 10rem;
 }
 
 .noScroll {
@@ -42,13 +41,6 @@
   background-color: #000a;
 }
 
-.newPostBtn {
-  position: fixed;
-  left: 5%;
-  top: 40%;
-  z-index: 2;
-}
-
 .newPostBtn button {
   margin-top: 4%;
   width: 18vw;
@@ -66,25 +58,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--c-light);
+  margin: 1em 0 0 0;
   text-align: center;
   font-size: 1.25rem;
   min-height: 7em;
 }
 
 .tags {
-  margin: 0.75em 1em;
+  margin: 1rem 0.5rem;
+}
+.tags li:not(:first-child) {
+  margin: 0.75rem 0 0 0;
 }
 .tag {
-  color: var(--c-blue) !important;
-  font-size: 1rem !important;
+  color: var(--c-blue);
+  font-size: 1rem;
 }
 
 .newPostOpen {
-  border-radius: 5em;
-  margin: 2em 0 0 0;
+  border-radius: 5rem;
+  margin: 1rem 0 0 0;
   background-color: #fff;
-  padding: 0.25em 0.5em;
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
 }
@@ -98,8 +93,70 @@
   gap: 0.5em;
   border-radius: 5em;
   background-color: transparent;
-  border: 1px solid #aaa;
+  border: none;
+  outline: 2px solid #aaa;
   font-size: 1rem;
   color: #888;
-  height: 2.5em;
+  height: 2rem;
+}
+
+.createPost:hover {
+  outline: 2px solid var(--c-blue);
+  color: var(--c-blue);
+}
+
+.newPosts {
+  position: sticky;
+  top: 5rem;
+  left: 50%;
+  width: 50%;
+  z-index: 7;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 0.5rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  background-color: var(--c-blue);
+  box-shadow: var(--bs-blue);
+  border-radius: 5rem;
+}
+
+.newPosts .icon {
+  width: 2rem;
+  height: 2rem;
+  color: #fff !important;
+}
+
+@media screen and (max-width: 1100px) {
+  .home {
+    grid-template-columns: 60vw auto;
+    gap: 5rem;
+  }
+  .center {
+    margin: 0 0 0 5rem;
+  }
+  .left {
+    display: none;
+  }
+}
+@media screen and (max-width: 800px) {
+  .home {
+    width: 75vw;
+    grid-template-columns: auto;
+    gap: 0;
+  }
+
+  .center {
+    margin: 0 auto;
+    width: 100%;
+  }
+  .left {
+    display: none;
+  }
+  .right {
+    display: none;
+  }
 }

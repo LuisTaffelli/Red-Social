@@ -6,11 +6,10 @@
 
   --hue-blue: 198;
 
-  --c-light-blue: hsl(198, 45%, 65%);
-  /*--c-blue: hsl(198, 40%, 49%);*/
-
-  --c-blue: #5af;
-  --bs-blue: 0 5px 10px #5af5;
+  --c-soft-blue: hsl(226deg, 100%, 95%);
+  --c-blue: hsl(226deg, 100%, 70%);
+  --c-hard-blue: hsl(226deg, 100%, 50%);
+  --bs-blue: 0 0.25rem 0.25rem hsla(226deg, 100%, 50%, 25%);
 
   --c-red: #c94f4f;
   --c-mix: #7f69a3;
@@ -44,7 +43,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #fff !important;
+  background-color: #fff;
 }
 
 form > h1 {
@@ -60,6 +59,7 @@ label {
 
 label input,
 label textarea {
+  font-family: "Roboto";
   padding: 0.75em;
   border: none;
   width: 100%;
@@ -81,27 +81,16 @@ form span {
   font-size: 1rem;
 }
 
+.btn:disabled {
+  background-color: #ccc;
+  cursor: no-drop;
+}
+
 button[type="submit"] {
   border-radius: 5em;
   border: none;
   color: #fff;
   background-color: var(--c-blue);
-}
-
-.input-image {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #aaa;
-  border-radius: 5em;
-  color: #888;
-  width: 3em;
-  height: 3em;
-}
-
-input[type="file"] {
-  display: none;
 }
 
 .input-group {
@@ -110,7 +99,7 @@ input[type="file"] {
   font-size: 0.9rem;
   width: 100%;
   border: 1px solid #ccc;
-  background-color: #fff !important;
+  background-color: #fff;
   padding: 0 0 0 1em;
   border-radius: 4px;
   overflow: hidden;
@@ -141,42 +130,80 @@ button {
 a {
   color: #1e1e1e;
   text-decoration: none;
-  font-size: 0.9rem !important;
+  font-size: 0.9rem;
+}
+
+a,
+button {
+  outline: 2px none var(--c-blue) !important;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--c-blue) !important;
+  outline-offset: 0.25rem;
 }
 
 .message {
   display: flex;
   align-items: center;
-  justify-items: center;
-  width: 10em;
-  height: 3em;
-  border-radius: 1em 1em 0 0;
+  justify-items: flex-start;
+  width: max-content;
+  height: 2.5rem;
+  border-radius: 0.25rem 0.25rem 0 0;
   position: fixed;
   bottom: 0;
-  right: 7em;
-  z-index: 999;
+  right: 1rem;
+  z-index: 5;
   background-color: #fff;
-  padding: 1em;
-  box-shadow: 0 0 0.5em #0002;
+  padding: 1rem 6rem 1rem 1.5rem;
   transition: all 0.5s ease;
-}
-
-.message:hover {
-  box-shadow: 0 0.5em 0.75em #0005;
+  border: 2px solid var(--c-blue);
+  border-bottom: none;
 }
 
 .message > span {
-  margin: 0 0 0 1em;
-}
-
-.avatar {
-  object-fit: cover;
-  object-position: center;
-  width: 3em;
-  height: 3em;
-  border-radius: 100%;
+  margin: 0 0 0 1rem;
 }
 
 .errors {
   position: absolute;
+}
+
+svg {
+  pointer-events: none;
+}
+
+@media screen and (max-width: 800px) {
+  .message {
+    bottom: 1rem;
+    padding: 0;
+    height: 4rem;
+    width: 4rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    border: none;
+    box-shadow: 0 0.25rem 0.5rem #0002;
+  }
+  .message:hover {
+    box-shadow: 0 0.5rem 0.75rem #0005;
+  }
+  .message > span {
+    display: none;
+  }
+}
+
+.top {
+  position: absolute !important;
+  display: flex;
+  width: max-content;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  top: 50% !important;
+  left: 50% !important;
+}
+
+.dark {
+  background-color: #333;
 }

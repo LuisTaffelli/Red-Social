@@ -13,20 +13,29 @@
 }
 
 .nav {
-  width: 80vw;
+  width: 95vw;
   margin: 0 auto;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 4rem;
 }
 
+.left {
+  width: 25vw;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.right {
+  width: 25vw;
+}
+
 .brand {
   display: flex;
   align-items: center;
   font-weight: 600;
-  font-size: 1.25em !important;
+  font-size: 1rem !important;
 }
 .brand > img {
   width: 0.95em;
@@ -46,6 +55,7 @@
 .right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 1em;
 }
 
@@ -59,6 +69,7 @@
   height: 3em;
   width: 3em;
   font-size: 1em !important;
+  border-bottom: 2px solid transparent;
   transform: translateY(0);
   transition: all 0.25s ease;
 }
@@ -88,19 +99,21 @@
 }
 
 .icon {
-  width: 2em;
-  height: 2em;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .signup,
 .logout {
-  padding: 0.5em 1em;
+  padding: 0.5em 0;
 }
 
 .signup {
   background-color: var(--c-blue);
   box-shadow: 0 0.25em 1em var(--c-blue);
   color: #fff;
+  min-width: max-content;
+  padding: 0.5rem 1rem;
   border-radius: 5em;
 }
 
@@ -115,6 +128,7 @@
 }
 
 .profile__menu {
+  box-shadow: 0 0.25rem 0.5rem #0001;
   position: absolute;
   top: 110%;
   right: 0%;
@@ -123,12 +137,17 @@
   transform: translate(0, 0);
   display: flex;
   flex-direction: column;
-  padding: 0.25em 0.75em;
-  border-radius: 0 0 1em 1em;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 0.5rem 0.5rem;
   transition: all 0.25s;
 }
 
+.profile__menu__res {
+  display: none;
+}
+
 .profile__link {
+  height: 2rem;
   position: relative;
   z-index: 2;
   display: flex;
@@ -143,10 +162,6 @@
   margin: 0.25em 0 0 0;
 }
 
-.profile__link:hover {
-  color: #fff;
-}
-
 .profile__link::after {
   content: "";
   position: absolute;
@@ -158,15 +173,16 @@
   width: 2px;
   border-radius: 0;
   background-color: var(--c-blue);
+  transition: all 0.25s;
 }
 
 .profile__link:hover::after {
-  width: 100%;
+  width: 1rem;
 }
 
 .show {
   display: flex;
-  height: 10em;
+  height: max-content;
 }
 .show > * {
   opacity: 1;
@@ -200,7 +216,8 @@
 
 .notifications {
   position: absolute;
-  top: 50px;
+  width: max-content;
+  top: 60px;
   right: 0;
   background-color: white;
   color: black;
@@ -210,15 +227,32 @@
   padding: 10px;
 }
 
-.notification {
-  padding: 5px;
-  font-size: 14px;
-}
-
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 800px) {
   .menu {
     display: none;
   }
+  .profile__menu__res {
+    display: block;
+  }
+  .nav {
+    gap: 1em;
+  }
+  .left,
+  .right {
+    width: max-content;
+  }
+}
+
+.markRead {
+  background-color: #89b2ff;
+  color: #fff;
+  margin: 0 0 1em 0;
+  border: none;
+  padding: 0.5em;
+  transition: all 0.25s;
+}
+.markRead:hover {
+  background-color: var(--c-blue);
 }
 
 .landing * {
@@ -237,10 +271,15 @@
   display: none;
 }
 
-.active,
+.active {
+  border-bottom: 2px solid var(--c-blue);
+}
+
+.active:not(.signup),
 .active * {
   transform: none;
   cursor: default;
+  color: #aaa;
 }
 
 .active:hover {
